@@ -9,6 +9,8 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+const VALIDATION_TOKEN = process.env.VALIDATION_TOKEN
+
 // Server frontpage
 app.get('/', (req, res) => {
     res.send('This is TestBot Server')
@@ -16,10 +18,13 @@ app.get('/', (req, res) => {
 
 // Facebook webhook
 app.get('/webhook', (req, res) => {
-  if (req.query['hub.verify_token'] === 'poop') {
-    res.send(req.query['hub.challenge'])
+  if (req.query['hub.mode'] === 'subscribe' &&
+      req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+    console.log('Validating webhook')
+    res.status(200).send(req.query['hub.challenge'])
   } else {
-    res.send('Invalid verify token')
+    console.error("Failed validation. Make sure the validation tokens match.")
+    res.status(403).send('Invalid verify token')
   }
 })
 
