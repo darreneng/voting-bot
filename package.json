@@ -4,12 +4,18 @@
   "description": "a voting bot built on the messenger platform",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/darreneng/voting-bot.git"
   },
   "author": "Darren Eng, Harsha Laxman",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.75.0"
+  }
 }
