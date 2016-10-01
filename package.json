@@ -1,0 +1,11 @@
+{
+  "name": "voting-bot",
+  "version": "1.0.0",
+  "description": "a voting bot built on the messenger platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Darren Eng, Harsha Laxman",
+  "license": "ISC"
+}
