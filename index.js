@@ -10,7 +10,8 @@ app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const VALIDATION_TOKEN = process.env.VALIDATION_TOKEN
+const VALIDATION_TOKEN = process.env.MESSENGER_VALIDATION_TOKEN
+const PAGE_ACCESS_TOKEN = process.env.MESSENGER_PAGE_ACCESS_TOKEN
 
 // Server frontpage
 app.get('/', (req, res) => {
@@ -30,17 +31,17 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
-  let data = req.body
+  const data = req.body
 
   if (data.object === 'page') {
     data.entry.forEach((pageEntry) => {
-      let pageID = pageEntry.id
-      let timeOfEvent = pageEntry.time
+      const pageID = pageEntry.id
+      const timeOfEvent = pageEntry.time
       pageEntry.messaging.forEach((messagingEvent) => {
         if (messagingEvent.optin) {
           // TODO handle optin
         } else if (messagingEvent.message) {
-          // TODO handle message
+          receivedMessage(messagingEvent)
         } else if (messagingEvent.delivery) {
           // TODO handle delivery
         } else if (messagingEvent.postback) {
@@ -58,6 +59,62 @@ app.post('/webhook', (req, res) => {
     res.sendStatus(200)
   }
 })
+
+function receivedMessage(event) {
+  const senderID = event.sender.id
+  const recipientID = event.recipient.id
+  const timeOfMessage = event.timestamp
+  const message = event.message
+
+  console.log("Received message for user %d and page %d at %d with message:",
+    senderID, recipientID, timeOfMessage)
+  console.log(JSON.stringify(message))
+
+  const messageID = message.mid
+
+  const messageText = message.text
+  const messageAttachments = message.attachments
+
+  if (messageText) {
+    // echo back message
+    sendTextMesssage(senderID, messageText)
+  } else if (messageAttachments) {
+    // notify user that attachment was received
+    sendTextMesssage(senderID, 'Message with attachment received')
+  }
+}
+
+function sendTextMesssage(recipientID, messageText) {
+  callSendAPI({
+    recipient: {
+      id: recipientID
+    },
+    message: {
+      text: messageText
+    }
+  })
+}
+
+function callSendAPI(messageData) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: messageData
+  }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const recipientID = body.recipient_id
+      const messageID = body.message_id
+
+      console.log("Successfully sent message with id %s to recipient %s",
+          messageId, recipientId)
+    } else {
+      console.error('Unable to send message.')
+      console.error(resposne)
+      console.error(error)
+    }
+  })
+}
 
 app.listen(app.get('port'), () => {
   console.log('App is running on port')
