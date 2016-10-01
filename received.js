@@ -21,12 +21,26 @@ module.exports = {
     const messageAttachments = message.attachments
 
     if (messageText) {
-      // echo back message
-      send.textMessage(senderID, messageText)
+      switch (messageText) {
+        case 'button':
+          // test button
+          send.buttonMessage(senderID)
+          break;
+        default:
+          // echo back message
+          send.textMessage(senderID, messageText)
+      }
     } else if (messageAttachments) {
       // notify user that attachment was received
       send.textMessage(senderID, 'Message with attachment received')
     }
-  }
+  },
+  postback(event) {
+    const senderID = event.sender.id
+    const recipientID = event.recipient.id
+    const timeOfMessage = event.timestamp
 
+    const payload = event.postback.payload
+
+  }
 }

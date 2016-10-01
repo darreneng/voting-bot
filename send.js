@@ -28,14 +28,37 @@ function callSendAPI(messageData) {
 }
 
 module.exports = {
-  textMessage(recipientID, messageText) {
+  textMessage(id, text) {
     callSendAPI({
-      recipient: {
-        id: recipientID
-      },
+      recipient: { id },
+      message: { text }
+    })
+  },
+
+  buttonMessage(id) {
+    callSendAPI({
+      recipient: { id },
       message: {
-        text: messageText
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'button',
+            text: 'What would you like to do?',
+            buttons: [
+              {
+                type: 'postback',
+                title: 'Make a new poll'
+                payload: 'make-new-poll'
+              },
+              {
+                type: 'postback',
+                title: 'Vote in a poll',
+                payload: 'vote-in-poll'
+              }
+            ]
+          }
+        }
       }
     })
   }
-}
+} // end module.exports
