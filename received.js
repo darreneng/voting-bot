@@ -4,6 +4,10 @@
 
 const send = require('./send')
 
+function getCode() {
+  return Math.floor(Math.random() * 90000) + 10000
+}
+
 module.exports = {
   message(event) {
     const senderID = event.sender.id
@@ -41,6 +45,17 @@ module.exports = {
     const timeOfMessage = event.timestamp
 
     const payload = event.postback.payload
+
+    switch (payload) {
+      case 'make-new-poll':
+
+        break
+      case 'vote-in-poll':
+
+        break
+      default:
+
+    }
 
   }
 }

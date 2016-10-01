@@ -49,14 +49,12 @@ app.post('/webhook', (req, res) => {
         } else if (messagingEvent.delivery) {
           // TODO handle delivery
         } else if (messagingEvent.postback) {
-          // TODO handle postback
-          console.log('VOTINGBOT received postback')
+          received.postback(messagingEvent)
         } else if (messagingEvent.read) {
           // TODO handle read
-        } else if (messagingEvent.account_linking) {
-          // TODO handle account linking
         } else {
-          console.log('Webhook received unknown messagingEvent: ', messagingEvent)
+          console.log('Webhook received unknown messagingEvent: ',
+              messagingEvent)
         }
       })
     })
