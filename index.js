@@ -50,6 +50,7 @@ app.post('/webhook', (req, res) => {
           // TODO handle delivery
         } else if (messagingEvent.postback) {
           // TODO handle postback
+          console.log('VOTINGBOT received postback')
         } else if (messagingEvent.read) {
           // TODO handle read
         } else if (messagingEvent.account_linking) {

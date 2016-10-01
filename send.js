@@ -47,7 +47,7 @@ module.exports = {
             buttons: [
               {
                 type: 'postback',
-                title: 'Make a new poll'
+                title: 'Make a new poll',
                 payload: 'make-new-poll'
               },
               {
