@@ -107,7 +107,7 @@ function callSendAPI(messageData) {
       const messageID = body.message_id
 
       console.log("Successfully sent message with id %s to recipient %s",
-          messageId, recipientId)
+          messageID, recipientID)
     } else {
       console.error('Unable to send message.')
       console.error(resposne)
