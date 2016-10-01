@@ -6,6 +6,7 @@ const request = require('request')
 
 const app = express()
 
+app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -28,4 +29,36 @@ app.get('/webhook', (req, res) => {
   }
 })
 
-app.listen((process.env.PORT || 3000))
+app.post('/webhook', (req, res) => {
+  let data = req.body
+
+  if (data.object === 'page') {
+    data.entry.forEach((pageEntry) => {
+      let pageID = pageEntry.id
+      let timeOfEvent = pageEntry.time
+      pageEntry.messaging.forEach((messagingEvent) => {
+        if (messagingEvent.optin) {
+          // TODO handle optin
+        } else if (messagingEvent.message) {
+          // TODO handle message
+        } else if (messagingEvent.delivery) {
+          // TODO handle delivery
+        } else if (messagingEvent.postback) {
+          // TODO handle postback
+        } else if (messagingEvent.read) {
+          // TODO handle read
+        } else if (messagingEvent.account_linking) {
+          // TODO handle account linking
+        } else {
+          console.log('Webhook received unknown messagingEvent: ', messagingEvent)
+        }
+      })
+    })
+
+    res.sendStatus(200)
+  }
+})
+
+app.listen(app.get('port'), () => {
+  console.log('App is running on port')
+})
