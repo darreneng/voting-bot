@@ -1,3 +1,5 @@
-# voting-bot
+# votingbot
 
-Simple Facebook Messenger bot for a voting application. Built for SD Hacks 2016
+Simple Facebook Messenger bot for a voting application.
+
+Built by Darren Eng and Harsha Laxman for SD Hacks 2016
