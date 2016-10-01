@@ -9,7 +9,7 @@ function getCode() {
 }
 
 module.exports = {
-  message(event) {
+  message(event, db={}) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
     const timeOfMessage = event.timestamp
@@ -39,7 +39,7 @@ module.exports = {
       send.textMessage(senderID, 'Message with attachment received')
     }
   },
-  postback(event) {
+  postback(event, db={}) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
     const timeOfMessage = event.timestamp
@@ -48,7 +48,9 @@ module.exports = {
 
     switch (payload) {
       case 'make-new-poll':
-
+        const code = getCode()
+        db[senderID.toString()] = code
+        send.textMessage(senderID, 'Your poll code is: ', code)
         break
       case 'vote-in-poll':
 

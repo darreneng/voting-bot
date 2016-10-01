@@ -17,6 +17,9 @@ app.use(bodyParser.json())
 
 const VALIDATION_TOKEN = process.env.MESSENGER_VALIDATION_TOKEN
 
+// Replace with an actual database
+let db = {}
+
 // Server frontpage
 app.get('/', (req, res) => {
     res.send('This is TestBot Server')
@@ -45,11 +48,11 @@ app.post('/webhook', (req, res) => {
         if (messagingEvent.optin) {
           // TODO handle optin
         } else if (messagingEvent.message) {
-          received.message(messagingEvent)
+          received.message(messagingEvent, db)
+        } else if (messagingEvent.postback) {
+          received.postback(messagingEvent, db)
         } else if (messagingEvent.delivery) {
           // TODO handle delivery
-        } else if (messagingEvent.postback) {
-          received.postback(messagingEvent)
         } else if (messagingEvent.read) {
           // TODO handle read
         } else {
