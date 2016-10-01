@@ -46,11 +46,14 @@ module.exports = {
 
     const payload = event.postback.payload
 
+    console.log("Received postback for user %d and page %d with" +
+        "payload '%s' at %d", senderID, recipientID, payload, timeOfPostback);
+
     switch (payload) {
       case 'make-new-poll':
-        const code = getCode()
-        db[senderID.toString()] = code
-        send.textMessage(senderID, 'Your poll code is: ', code)
+        const pollCode = getCode()
+        db[senderID.toString()] = pollCode
+        send.textMessage(senderID, 'Your poll code is: ' + pollCode)
         break
       case 'vote-in-poll':
 
