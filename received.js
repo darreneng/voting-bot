@@ -9,7 +9,7 @@ function getCode() {
 }
 
 module.exports = {
-  message(event, db={}) {
+  message(event, db) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
     const timeOfMessage = event.timestamp
@@ -39,7 +39,7 @@ module.exports = {
       send.textMessage(senderID, 'Message with attachment received')
     }
   },
-  postback(event, db={}) {
+  postback(event, db) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
     const timeOfMessage = event.timestamp
