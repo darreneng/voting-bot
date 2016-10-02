@@ -4,12 +4,8 @@
 
 const send = require('./send')
 
-function getCode() {
-  return Math.floor(Math.random() * 90000) + 10000
-}
-
 module.exports = {
-  message(event, db) {
+  message(event, store) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
     const timeOfMessage = event.timestamp
@@ -39,7 +35,7 @@ module.exports = {
       send.textMessage(senderID, 'Message with attachment received')
     }
   },
-  postback(event, db) {
+  postback(event, store) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
     const timeOfMessage = event.timestamp
@@ -51,15 +47,16 @@ module.exports = {
 
     switch (payload) {
       case 'make-new-poll':
-        const pollCode = getCode()
-        db[senderID.toString()] = pollCode
+        // Generate 5 digit code
+        const pollCode = Math.floor(Math.random() * 90000) + 10000
+        store[senderID.toString()] = pollCode
         send.textMessage(senderID, 'Your poll code is: ' + pollCode)
         break
       case 'vote-in-poll':
-
+        // TODO prompt user for poll code
         break
       default:
-
+        console.log('No action defined for postback payload "' + payload + '"')
     }
 
   }

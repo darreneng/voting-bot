@@ -18,7 +18,8 @@ app.use(bodyParser.json())
 const VALIDATION_TOKEN = process.env.MESSENGER_VALIDATION_TOKEN
 
 // Replace with an actual database
-let db = {}
+// Stores all state data for application
+let store = {}
 
 // Server frontpage
 app.get('/', (req, res) => {
@@ -48,9 +49,9 @@ app.post('/webhook', (req, res) => {
         if (messagingEvent.optin) {
           // TODO handle optin
         } else if (messagingEvent.message) {
-          received.message(messagingEvent, db)
+          received.message(messagingEvent, store)
         } else if (messagingEvent.postback) {
-          received.postback(messagingEvent, db)
+          received.postback(messagingEvent, store)
         } else if (messagingEvent.delivery) {
           // TODO handle delivery
         } else if (messagingEvent.read) {
