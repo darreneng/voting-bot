@@ -38,7 +38,7 @@ module.exports = {
   postback(event, store) {
     const senderID = event.sender.id
     const recipientID = event.recipient.id
-    const timeOfMessage = event.timestamp
+    const timeOfPostback = event.timestamp
 
     const payload = event.postback.payload
 
